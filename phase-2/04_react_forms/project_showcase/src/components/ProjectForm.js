@@ -1,29 +1,70 @@
-// Deliverable 1: Make the `ProjectForm` component a controlled component
+import { useState } from "react";
 
-// - Initialize state for all the form fields found in the component
+const ProjectForm = ({ addProject }) => {
+  const [newProject, setNewProject] = useState({
+    name: "",
+    about: "",
+    phase: "",
+    link: "",
+    image: "",
+  });
 
-// - Add an `onChange` event to each field that will update state associated 
-// with the field that is interacted with
+  const { name, about, phase, link, image } = newProject;
 
-// - Provide a `value` attribute to each form field that will return the 
-// associated piece of state
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newProject = { name, about, phase, link, image };
+    fetch("http://localhost:4000/projects", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newProject),
+    })
+      .then((r) => r.json())
+      .then((createdProject) => {
+        // update state so created project shows up
+        setNewProject({
+          name: "",
+          about: "",
+          phase: "",
+          link: "",
+          image: "",
+        });
+        addProject(createdProject);
+      });
+  };
 
-// - Add an `onSubmit` event handler to the form
+  const handleOnChange = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+    setNewProject({ ...newProject, [key]: value });
+  };
 
-const ProjectForm = () => {
   return (
     <section>
-      <form className="form" autoComplete="off">
+      <form onSubmit={handleSubmit} className="form" autoComplete="off">
         <h3>Add New Project</h3>
 
         <label htmlFor="name">Name</label>
-        <input type="text" id="name" name="name" />
+        <input
+          value={name}
+          onChange={handleOnChange}
+          type="text"
+          id="name"
+          name="name"
+        />
 
         <label htmlFor="about">About</label>
-        <textarea id="about" name="about" />
+        <textarea
+          value={about}
+          onChange={handleOnChange}
+          id="about"
+          name="about"
+        />
 
         <label htmlFor="phase">Phase</label>
-        <select name="phase" id="phase">
+        <select value={phase} onChange={handleOnChange} name="phase" id="phase">
           <option>Select One</option>
           <option value="1">Phase 1</option>
           <option value="2">Phase 2</option>
@@ -33,10 +74,22 @@ const ProjectForm = () => {
         </select>
 
         <label htmlFor="link">Project Homepage</label>
-        <input type="text" id="link" name="link" />
+        <input
+          value={link}
+          onChange={handleOnChange}
+          type="text"
+          id="link"
+          name="link"
+        />
 
         <label htmlFor="image">Screenshot</label>
-        <input type="text" id="image" name="image" />
+        <input
+          value={image}
+          onChange={handleOnChange}
+          type="text"
+          id="image"
+          name="image"
+        />
 
         <button type="submit">Add Project</button>
       </form>
@@ -45,3 +98,4 @@ const ProjectForm = () => {
 };
 
 export default ProjectForm;
+
