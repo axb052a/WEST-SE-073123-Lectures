@@ -3,7 +3,6 @@
 # Review MVC
 # SQLAlchemy import
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_serializer import SerializerMixin
 
 # 📚 Review With Students:
 # What SQLAlchemy() is replacing from SQLAlchemy in phase 3
@@ -16,7 +15,7 @@ db = SQLAlchemy()
 # 2. ✅ navigate to app.py
 
 
-class Production(db.Model, SerializerMixin):
+class Production(db.Model):
     __tablename__ = "productions"
 
     id = db.Column(db.Integer, primary_key=True)

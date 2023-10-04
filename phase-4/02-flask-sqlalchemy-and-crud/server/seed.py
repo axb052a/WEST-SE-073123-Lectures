@@ -64,7 +64,17 @@ with app.app_context():
     )
 
     db.session.add(p4)
+    
     db.session.commit()
+    
+    c1 = CastMember(name= "Example Name", production_id = p1.id)
+    c2 = CastMember(name= "Example Name 2", production_id = p1.id)
+    c3 = CastMember(name= "Example Name 3", production_id = p2.id)
+    c4 = CastMember(name= "Example Name 4", production_id = p2.id)
+
+    db.session.add_all(c1, c2, c3, c4)
+    
+    
 # 8.✅ Create a query to delete all existing records from Production
 
 # 9.✅ Create some seeds for production and commit them to the database.
